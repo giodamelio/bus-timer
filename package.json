@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "Simple bus display with a Raspberry Pi + Adafruit 0.56\" 7-Segment Backpack",
   "author": "Gio d'Amelio",
+  "dependencies": {
+    "request": "^2.34.0",
+    "i2c": "^0.1.4"
+  },
   "main": "index.coffee",
   "repository": {
     "type": "git",
