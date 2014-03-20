@@ -1,0 +1,16 @@
+{
+  "name": "bus-timer",
+  "version": "0.1.0",
+  "description": "Simple bus display with a Raspberry Pi + Adafruit 0.56\" 7-Segment Backpack",
+  "author": "Gio d'Amelio",
+  "main": "index.coffee",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/giodamelio/bus-timer.git"
+  },
+  "license": "GPL",
+  "bugs": {
+    "url": "https://github.com/giodamelio/bus-timer/issues"
+  },
+  "homepage": "https://github.com/giodamelio/bus-timer"
+}
