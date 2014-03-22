@@ -29,7 +29,7 @@ class BusTimer():
         if len(data.json()["data"]["arrivalsAndDepartures"]) > 0:
             nextBusTime = data.json()["data"]["arrivalsAndDepartures"][0]["predictedDepartureTime"]
         else:
-            return 0
+            return -1
 
         timeTillNextBus = nextBusTime - (int(time.time()) * 1000) 
         
@@ -41,6 +41,14 @@ class BusTimer():
             from Adafruit_Seven_Segment_Backback import Adafruit_7Segment
             # Init our display
             display = Adafruit_7Segment.SevenSegment(address=0x70)
+            
+            # If there are no buses on the scedule do a line
+            if time == -1:
+                display.writeDigitRaw(0, 0x40)
+                display.writeDigitRaw(1, 0x40)
+                display.writeDigitRaw(3, 0x40)
+                display.writeDigitRaw(4, 0x40)
+                return
 
             # Check if our nunber is negitive
             negative = True if time < 0 else False
