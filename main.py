@@ -19,21 +19,24 @@ class BusTimer():
         self.writeTime(time)
     
     def getNextTime(self, routeId, busId):
-        data = requests.get("http://api.pugetsound.onebusaway.org/api/where/arrivals-and-departures-for-stop/1_%s.json" % routeId,
-            params={
-                "key": "TEST"
-            }
-        )
-
-        # Get the predicted time until next bus
-        if len(data.json()["data"]["arrivalsAndDepartures"]) > 0:
-            nextBusTime = data.json()["data"]["arrivalsAndDepartures"][0]["predictedDepartureTime"]
+        if self.options.testData:
+            return int(self.options.testData)
         else:
-            return -1
+            data = requests.get("http://api.pugetsound.onebusaway.org/api/where/arrivals-and-departures-for-stop/1_%s.json" % routeId,
+                params={
+                    "key": "TEST"
+                }
+            )
 
-        timeTillNextBus = nextBusTime - (int(time.time()) * 1000) 
-        
-        return (timeTillNextBus / 1000 / 60)
+            # Get the predicted time until next bus
+            if len(data.json()["data"]["arrivalsAndDepartures"]) > 0:
+                nextBusTime = data.json()["data"]["arrivalsAndDepartures"][0]["predictedDepartureTime"]
+            else:
+                return -1
+
+            timeTillNextBus = nextBusTime - (int(time.time()) * 1000)
+
+            return (timeTillNextBus / 1000 / 60)
 
     def writeTime(self, time):
         if not self.options.noDisplay:
@@ -85,6 +88,9 @@ if __name__ == "__main__":
 
     # Do we have a hardware diaplay
     parser.add_argument("--no-display", "-nd", dest="noDisplay", action="store_true", help="Do we have a hardware display")
+
+    # Use test data
+    parser.add_argument("--test-data", "-d", dest="testData", help="Set the bus id")
     
     # Set our defautls 
     parser.set_defaults(noDisplay=False)
