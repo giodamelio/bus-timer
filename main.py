@@ -53,20 +53,19 @@ class BusTimer():
                 display.writeDigitRaw(4, 0x40)
                 return
 
-            # Check if our nunber is negitive
-            negative = True if time < 0 else False
+            # Display the negative sign if possable
+            if time < 0:
+                display.writeDigitRaw(1, 0x40)
 
             # Remove the negitive value
             time = abs(time)
 
             # Convert the time to a string and fill extra digits
-            time = str(time).zfill(4)
+            time = str(time).zfill(2)
 
-            display.writeDigit(0, int(time[0]))
-            display.writeDigit(1, int(time[1]))
-            display.setColon(True)
-            display.writeDigit(3, int(time[2]))
-            display.writeDigit(4, int(time[3]), negative)
+            # Write the digits
+            display.writeDigit(3, int(time[0]))
+            display.writeDigit(4, int(time[1]))
         else:
             # No hardware display
             print time
