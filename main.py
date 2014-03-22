@@ -26,7 +26,10 @@ class BusTimer():
         )
 
         # Get the predicted time until next bus
-        nextBusTime = data.json()["data"]["arrivalsAndDepartures"][0]["predictedDepartureTime"]
+        if len(data.json()["data"]["arrivalsAndDepartures"]) > 0:
+            nextBusTime = data.json()["data"]["arrivalsAndDepartures"][0]["predictedDepartureTime"]
+        else:
+            return 0
 
         timeTillNextBus = nextBusTime - (int(time.time()) * 1000) 
         
