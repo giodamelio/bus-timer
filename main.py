@@ -1,12 +1,21 @@
 import argparse
 import time
 from threading import Timer
+import json
 
 import requests
 
 class BusTimer():
     def __init__(self, options):
         self.options = options
+	
+        # Check if we have an api key, otherwise use test
+        try:
+            with open(self.options.apikeyFile) as apikeyFile:
+		self.options.apikey = json.load(apikeyFile)["apikey"]
+	except:
+	    self.options.apikey = "TEST"
+
         self.refresh()
         
     def refresh(self):
@@ -24,7 +33,7 @@ class BusTimer():
         else:
             data = requests.get("http://api.pugetsound.onebusaway.org/api/where/arrivals-and-departures-for-stop/1_%s.json" % routeId,
                 params={
-                    "key": "TEST"
+                    "key": self.options.apikey
                 }
             )
 
@@ -84,6 +93,9 @@ if __name__ == "__main__":
 
     # Get the refresh interval
     parser.add_argument("--refresh-interval", "-i", dest="interval", default=30, help="Set the refresh interval in seconds")
+
+    # Get our api key from this file
+    parser.add_argument("--api-key", "-a", dest="apikeyFile", default="onebuskey.json", help="Api key file")
 
     # Do we have a hardware diaplay
     parser.add_argument("--no-display", "-nd", dest="noDisplay", action="store_true", help="Do we have a hardware display")
